@@ -3,21 +3,27 @@ import cv2
 import numpy as np
 
 lines = []
-with open('./data/driving_log.csv') as csvfile:
+with open('../data/driving_log.csv') as csvfile:
 	reader = csv.reader(csvfile)
 	for line in reader:
 		lines.append(line)
 
 images = []
 measurements = []
+correction = 0.01
 for line in lines:
-	source_path = line[0]
-	filename = source_path.split('/')[-1]
-	current_path = './data/IMG/' + filename
-	image = cv2.imread(current_path)
-	images.append(image)
+	for i in range(3):
+		source_path = line[i]
+		filename = source_path.split('/')[-1]
+		current_path = '../data/IMG/' + filename
+		image = cv2.imread(current_path)
+		images.append(image)
 	measurement = float(line[3])
+	measurement_left = measurement + correction
+	measurement_right = measurement - correction
 	measurements.append(measurement)
+	measurements.append(measurement_left)
+	measurements.append(measurement_right)
 
 
 X_train = np.array(images)
@@ -31,7 +37,7 @@ from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
 
 model = Sequential()
-X_normalized = np.array(X_train / 255.0 - 0.5)
+X_train = np.array(X_train / 255.0 - 0.5)
 #model.add(Cropping2D(cropping=((70, 25), (0, 0)), input_shape=(160, 320, 3)))
 #model.add(Convolution2D(24, 5, 5, subsample=(2, 2), activation="relu", input_shape=(160, 320, 3)))
 model.add(Cropping2D(cropping=((70, 25), (0, 0)), input_shape=(160, 320, 3)))
@@ -56,6 +62,6 @@ model.add(Dense(84))
 model.add(Dense(1))
 '''
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_normalized, y_train, validation_split=0.2, shuffle=True, nb_epoch=5)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=5)
 
-model.save('model.h5')
+model.save('../mymodel.h5')
