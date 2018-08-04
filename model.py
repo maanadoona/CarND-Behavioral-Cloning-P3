@@ -1,48 +1,57 @@
 import csv
 import cv2
 import numpy as np
+import sklearn
+from random import shuffle
 
-lines = []
+samples = []
 with open('../data/driving_log.csv') as csvfile:
 	reader = csv.reader(csvfile)
 	for line in reader:
-		lines.append(line)
+		samples.append(line)
 
-images = []
-measurements = []
-#correction = 0.000001
+from sklearn.model_selection import train_test_split
+train_samples, validation_samples = train_test_split(samples, test_size=0.2)
+
 correction = 0.1
-for line in lines:
-	for i in range(3):
-		source_path = line[i]
-		source_path = line[i]
-		filename = source_path.split('/')[-1]
-		current_path = '../data/IMG/' + filename
-		image = cv2.imread(current_path)
-		images.append(image)
-		if i == 0:
-			images.append(cv2.flip(image,1))
-	measurement = float(line[3])
-	measurement_left = measurement + correction
-	measurement_right = measurement - correction
-	measurements.append(measurement)
-	measurements.append(measurement*-1.0)
-	measurements.append(measurement_left)
-	#measurements.append(measurement_left*-1.0)
-	measurements.append(measurement_right)
-	#measurements.append(measurement_right*-1.0)
 
-X_train = np.array(images)
-y_train = np.array(measurements)
+def generator(samples, batch_size=32):
+	num_samples = len(samples)
+	while 1:
+		shuffle(samples)
+		for offset in range(0, num_samples, batch_size):
+			batch_samples = samples[offset:offset+batch_size]
+			images = []
+			angles = []
+			for batch_sample in batch_samples:
+				for i in range(3):
+					name = '../data/IMG/' + batch_sample[i].split('/')[-1]
+					image = cv2.imread(name)
+					images.append(image)
+					if i == 0:
+						images.append(cv2.flip(image, 1))
+	
+				angle = float(batch_sample[3])
+				angle_left = angle + correction
+				angle_right = angle - correction				
+				angles.append(angle)
+				angles.append(angle*-1.0)
+				angles.append(angle_left)
+				angles.append(angle_right)
 
+			X_train = np.array(images)
+			X_train = np.array(X_train / 127.5 - 1.)
+			y_train = np.array(angles)
+			yield sklearn.utils.shuffle(X_train, y_train)
+
+train_generator = generator(train_samples, batch_size=32)
+validation_generator = generator(validation_samples, batch_size=32)
 
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, Cropping2D, Dropout
 from keras.layers.core import Lambda
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
-
-X_train = np.array(X_train / 255.0 - 0.5)
 
 #my model
 model = Sequential()
@@ -89,6 +98,9 @@ model.add(Dense(84))
 model.add(Dense(1))
 '''
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=5)
 
-model.save('../model_my24.h5')
+model.fit_generator(train_generator, samples_per_epoch= len(train_samples)*4, validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=3)
+
+model.save('../model.h5')
+
+
