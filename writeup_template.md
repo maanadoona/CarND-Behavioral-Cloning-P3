@@ -122,7 +122,7 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 ![alt text][image2]
 ![alt text][image6]
 
-After the collection process, I had X number of data points. I then preprocessed this data by cropping.
+After the collection process, I had 12472 number of data points. I then preprocessed this data by cropping.
 Raw images are burden to process, Cropping images help to reduce time for learning.
 
 I finally randomly shuffled the data set and put 20% of the data into a validation set. 
