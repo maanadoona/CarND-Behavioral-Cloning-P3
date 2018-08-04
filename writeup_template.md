@@ -25,7 +25,7 @@ The goals / steps of this project are the following:
 [image3]: ./examples/recoverylane/center_2018_08_02_15_54_42_364.jpg "Center Recovery Image"
 [image4]: ./examples/recoverylane/left_2018_08_02_15_54_42_364.jpg "Left Recovery Image"
 [image5]: ./examples/recoverylane/right_2018_08_02_15_54_42_364.jpg "Right Recovery Image"
-[image6]: ./examples/flip/center_flip_2018_08_02_15_51_34_674.jpg "Center Flipped Image"
+[image6]: ./examples/flip/center_flip_2018_08_02_15_34_674.jpg "Center Flipped Image"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
