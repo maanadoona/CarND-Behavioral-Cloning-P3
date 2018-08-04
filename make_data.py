@@ -14,6 +14,10 @@ for line in lines:
 		current_path = '../data/IMG/' + filename
 		image = cv2.imread(current_path)
 
+		image_flip = cv2.flip(image, 1)
+		save_path = '../data/IMG_FLIP' + filename
+		cv2.imwrite('../data/IMG_FLIP/' + filename, image_flip)
+
 		#crop
 		height, width, channels = image.shape
 		image_crop = image[45:height-25,0:width]

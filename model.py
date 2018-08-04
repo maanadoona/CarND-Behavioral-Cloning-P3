@@ -5,7 +5,7 @@ import sklearn
 from random import shuffle
 
 samples = []
-with open('../data/driving_log.csv') as csvfile:
+with open('../data/driving_log.csv', encoding="utf-8") as csvfile:
 	reader = csv.reader(csvfile)
 	for line in reader:
 		samples.append(line)
