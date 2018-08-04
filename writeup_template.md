@@ -19,12 +19,12 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/ceterlane/center_2018_08_02_15_51_34_674.jpg "Center Image"
-[image2-1]: ./examples/ceterlane/left_2018_08_02_15_51_34_674.jpg "Left Image"
-[image2-2]: ./examples/ceterlane/right_2018_08_02_15_51_34_674.jpg "Right Image"
+[image2]: ./examples/centerlane/center_2018_08_02_15_51_34_674.jpg "Center Image"
+[image2-1]: ./examples/centerlane/left_2018_08_02_15_51_34_674.jpg "Left Image"
+[image2-2]: ./examples/centerlane/right_2018_08_02_15_51_34_674.jpg "Right Image"
 [image3]: ./examples/recoverylane/center_2018_08_02_15_54_42_364.jpg "Center Recovery Image"
-[image4]: ./examples/recoverylane/left_2018_08_02_15_54_42_364.jpg "Center Recovery Image"
-[image5]: ./examples/recoverylane/right_2018_08_02_15_54_42_364.jpg "Center Recovery Image"
+[image4]: ./examples/recoverylane/left_2018_08_02_15_54_42_364.jpg "Left Recovery Image"
+[image5]: ./examples/recoverylane/right_2018_08_02_15_54_42_364.jpg "Right Recovery Image"
 [image6]: ./examples/flip/center_flip_2018_08_02_15_51_34_674.jpg "Center Flipped Image"
 
 ## Rubric Points
@@ -105,12 +105,14 @@ Here is a visualization of the architecture (note: visualizing the architecture 
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
-![alt text][image2][alt text][image2-1][alt text][image2-2]
+![alt text][image2-1]
+![alt text][image2]
+![alt text][image2-2]
 
 I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to recovery angles. These images show what a recovery looks like starting from outsie to inside :
 
-![alt text][image3]
 ![alt text][image4]
+![alt text][image3]
 ![alt text][image5]
 
 Then I repeated this process on track two in order to get more data points.
